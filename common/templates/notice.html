@@ -1,0 +1,89 @@
+<style>
+#system_notice_area {
+	position: fixed;
+	top: 0px;
+	left: 25%;
+	width: 50%;
+	min-height: 20px;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	font-weight: bold;
+	display: none;
+	padding: 5px;
+	color: #000000;
+	text-align: center;
+	z-index: 100001;
+	font-size: 13px;
+}
+#system_notice_area_dismiss{
+color: #FFFFFF;
+cursor: pointer;
+}
+.system_notice_area_style1 {
+	display:block;
+	background: #00C348;
+	border: 1px solid green;
+}
+
+.system_notice_area_style0 {
+	display:block;
+	background: #FA5A6A;
+	border: 1px solid brown;
+}
+.system_notice_area_style_hidden {
+display:none;
+}
+</style>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		
+		var cookie_date = new Date ( );  // current date & time
+		  cookie_date.setTime ( cookie_date.getTime() - 1 );
+		  document.cookie='_notice_flash=;expires='+cookie_date.toGMTString();
+		  document.cookie='_notice_flash_type=;expires='+cookie_date.toGMTString();
+			
+		jQuery('.system_notice_area_style0,.system_notice_area_style1').animate({
+			opacity : 'show',
+			height : 'show'
+		}, 500);
+
+		jQuery('#system_notice_area_dismiss').click(function() {
+			jQuery('#system_notice_area').animate({
+				opacity : 'hide',
+				height : 'hide'
+			}, 500);
+
+		});
+
+	});
+	function set_jnotice(type,msg)
+	{
+		
+		
+		$("#system_notice_area").css({"zIndex":"12001"});
+		$("#system_notice_area").animate({
+			opacity : 'show',
+			height : 'show'
+			}, 800);
+		if(type==0)
+		$("#system_notice_area").removeClass("system_notice_area_style1").addClass("system_notice_area_style0");
+		else
+		$("#system_notice_area").removeClass("system_notice_area_style0").addClass("system_notice_area_style1");
+		
+		$("#system_notice_area").html(msg+'&nbsp;&nbsp;&nbsp; <span id="system_notice_area_dismiss">X</span>');
+		setTimeout(function(){$("#system_notice_area").hide(200);},4000)
+	
+		jQuery('#system_notice_area_dismiss').click(function() {
+			jQuery('#system_notice_area').animate({
+				opacity : 'hide',
+				height : 'hide'
+			}, 500);
+
+		});
+	}
+	
+</script>
+<div class="{noticetype}" id="system_notice_area" >
+	{notice}&nbsp;&nbsp;&nbsp; <span id="system_notice_area_dismiss">X</span> 
+</div>

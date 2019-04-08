@@ -1,0 +1,39 @@
+<IfModule mod_negotiation.c>
+    Options -MultiViews
+</IfModule>
+
+RewriteEngine on
+Options +FollowSymlinks
+
+IndexIgnore *
+RewriteRule \.htaccess - [F]
+
+RewriteBase /
+RewriteRule (.*)(common|data|library|userfiles)(\/)(.*)$ $2$3$4 [QSA,L]
+
+RewriteCond %{request_uri} ^(.*)(addons)(\/)(.*)$
+	RewriteRule (addons)(\/)(.*)(css|fonts|js|images)(\/)(.*)$ %2/$3$4$5$6 [L]
+
+RewriteCond %{request_uri} ^(.*)(admin|installation|cron)(\/)(.*)$
+	RewriteRule (.*)(css|fonts|js|images)(\/)(.*)$ %2/$2$3$4 [L]
+RewriteRule (.*)(css|fonts|js|images)(\/)(.*)$ $2$3$4 [L]
+
+
+RewriteRule ^(.*)(index\.php)(\/?)(.*)$ $1index.php?page=index/$4 [QSA,L]
+
+#below rewrite handles admin urls from addons also
+RewriteCond %{request_uri} !^index\.php
+	RewriteCond %{request_uri} ^(.*)(admin\/)(.*)$
+		RewriteRule (.*)(admin\/)(.*)$ $1$2index.php?page=$3 [QSA,L]
+
+#below rewrite handles addons direct access urls
+RewriteCond %{request_uri} !^index\.php
+  RewriteCond %{request_uri} ^(.*)(addons\/)(.*)$
+    RewriteRule (.*)(addons\/)(.+?\/)(.*)$ $1$2$3index.php?page=$4 [QSA,L]
+
+RewriteCond %{request_uri} !^index\.php
+  RewriteCond %{request_uri} ^(.*)(installation|cron)(\/)(.*)$
+	 RewriteRule (.*)(installation|cron)(\/)(.*)$ $2$3index.php?page=$4 [QSA,L]
+
+RewriteCond %{request_uri} !^index\.php
+  RewriteRule ^(.*)$ index.php?page=$1 [QSA,L]
